@@ -193,4 +193,4 @@ class DatabaseForWYHedge:
 
 if __name__ == '__main__':
     # print(DatabaseForWYHedge.search_data_from_rate())
-    db = create_db()
+    db_connect = create_db()
