@@ -1,9 +1,11 @@
 import pymysql
+from setting.settings import DATABASE
 
 
 def create_db():
-    db = pymysql.connect(host='localhost', user='root', password='since1967',
-                         db='odds', port=3306, cursorclass=pymysql.cursors.DictCursor, charset='utf8')
+    db = pymysql.connect(host=DATABASE['HOST'], user=DATABASE['USER'], password=DATABASE['PASSWORD'],
+                         db=DATABASE['NAME'], port=DATABASE['PORT'],
+                         cursorclass=pymysql.cursors.DictCursor, charset='utf8')
     return db
 
 
@@ -190,4 +192,5 @@ class DatabaseForWYHedge:
 
 
 if __name__ == '__main__':
-    print(DatabaseForWYHedge.search_data_from_rate())
+    # print(DatabaseForWYHedge.search_data_from_rate())
+    db = create_db()
