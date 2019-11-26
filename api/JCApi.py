@@ -69,9 +69,69 @@ class JC:
 
 
 class JCConvert:
-    # 竞彩转换亚盘
+    """竞彩转换亚盘"""
+
     @staticmethod
-    def __jc_convert():
+    def __jc_single_convert(result):
+        """
+        竞彩单条数据转亚盘
+        :param result:dict，event_id对应的单条数据
+        :return: list，元素为转换完成后的数据库字段对应结果组成的tuple
+        """
+        # 返回结果列表
+        save_to_database_list = []
+        if result['handicap'] == -1.0:
+            # 1.5盘
+            odd_1 = round(result['odd_1'] - 1, 3)
+            odd_2 = round((result['odd_draw'] * result['odd_2']) / (result['odd_draw'] + result['odd_2']) - 1, 3)
+            save_to_database_list.append((0, result['event'], ' ', result['event_id'], '竞彩', odd_1,
+                                          odd_2, 888, 0, result['start_time'], datetime.now(), 1.5,
+                                          "足球", result['league']))
+        elif result['handicap'] == 1.0:
+            # -1.5盘
+            odd_1 = round(
+                (result['odd_1'] * result['odd_draw']) / (result['odd_1'] + result['odd_draw']) - 1
+                , 3)
+            odd_2 = round(result['odd_2'] - 1, 3)
+            save_to_database_list.append((0, result['event'], ' ', result['event_id'], '竞彩', odd_1,
+                                          odd_2, 888, 0, result['start_time'], datetime.now(), -1.5,
+                                          "足球", result['league']))
+        elif result['handicap'] == -2.0:
+            # 1.5盘
+            odd_1 = round((result['odd_1'] * result['odd_draw']) / (result['odd_1'] + result['odd_draw']), 3)
+            odd_2 = round(result['odd_2'] - 1, 3)
+            save_to_database_list.append((0, result['event'], ' ', result['event_id'], '竞彩', odd_1,
+                                          odd_2, 888, 0, result['start_time'], datetime.now(), 1.5,
+                                          "足球", result['league']))
+            # 1.75盘
+            odd_1 = round(
+                ((1200 * result['odd_1'] * result['odd_draw'] - 1200 * result['odd_draw'] - 1176 * result[
+                    'odd_1']) / 25) / (48 * result['odd_draw'] + 24 * result['odd_1']), 3)
+            odd_2 = round(result['odd_2'] - ((12 * result['odd_2']) / (25 * result['odd_draw'])) - 1, 3)
+            save_to_database_list.append((0, result['event'], ' ', result['event_id'], '竞彩', odd_1,
+                                          odd_2, 888, 0, result['start_time'], datetime.now(), 1.75,
+                                          "足球", result['league']))
+        elif result['handicap'] == -3.0:
+            # 2.5盘
+            odd_1 = round((result['odd_1'] * result['odd_draw']) / (result['odd_1'] + result['odd_draw']), 3)
+            odd_2 = round(result['odd_2'] - 1, 3)
+            save_to_database_list.append((0, result['event'], ' ', result['event_id'], '竞彩',
+                                          odd_1, odd_2, 888, 0,
+                                          result['start_time'], datetime.now(), 2.5, "足球", result['league']))
+
+            # 2.75盘
+            odd_1 = round(
+                ((1200 * result['odd_1'] * result['odd_draw'] - 1200 * result['odd_draw'] - 1176 * result[
+                    'odd_1']) / 25) / (48 * result['odd_draw'] + 24 * result['odd_1']), 3)
+            odd_2 = round(result['odd_2'] - ((12 * result['odd_2']) / (25 * result['odd_draw'])) - 1, 3)
+            save_to_database_list.append((0, result['event'], ' ', result['event_id'], '竞彩',
+                                          odd_1, odd_2, 888, 0,
+                                          result['start_time'], datetime.now(), 2.75, "足球", result['league']))
+        return save_to_database_list
+
+    @classmethod
+    def __jc_convert(cls):
+        """竞彩转亚，两条数据转换"""
         event_id_list = DatabaseForJCConvert.distinct_id()
         save_to_database_list = []
         for event_id in event_id_list:
@@ -80,6 +140,9 @@ class JCConvert:
                 data_1 = results[1]
                 data_2 = results[0]
             except IndexError:
+                # 如果results中没有两条数据，说明此event_id对应只有单条数据
+                # 传入单条转换方法中进行转换并返回结果
+                save_to_database_list.extend(cls.__jc_single_convert(results[0]))
                 continue
             if data_2['handicap'] == 1.0:
                 # 0盘

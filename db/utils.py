@@ -45,6 +45,16 @@ def save_data_for_on_bet(save_to_database_list):
     db.commit()
 
 
+def save_data_for_wy_hedge(save_to_database_list):
+    """保存数据到wy_hedge表"""
+    db = create_db()
+    cursor = db.cursor()
+    insert_many_sql = "insert into `wy_hedge` values " \
+                      "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+    cursor.executemany(insert_many_sql, save_to_database_list)
+    db.commit()
+
+
 class DatabaseForAsiaToAsia:
     """为亚to亚提供数据库服务支持"""
     __db = create_db()
@@ -152,3 +162,32 @@ class DatabaseForOnBet:
         cls.__cursor.execute(select_sql, [event_id])
         results = cls.__cursor.fetchall()
         return results
+
+
+class DatabaseForWYHedge:
+    """王阳hedge表数据库支持"""
+    __db = create_db()
+    __cursor = __db.cursor()
+
+    @classmethod
+    def search_data_from_hedge(cls):
+        """提取hedge表所有数据"""
+        select_sql = "select * from `hedge`;"
+        cls.__cursor.execute(select_sql)
+        results = cls.__cursor.fetchall()
+        return results
+
+    @classmethod
+    def search_data_from_rate(cls):
+        """
+        提取rate表中dealer对应的返点率
+        :return: 字典，dealer为键，rate为值
+        """
+        select_sql = "select * from `dealer_rate`;"
+        cls.__cursor.execute(select_sql)
+        results = cls.__cursor.fetchall()
+        return {r['dealer']: r['rate'] for r in results}
+
+
+if __name__ == '__main__':
+    print(DatabaseForWYHedge.search_data_from_rate())

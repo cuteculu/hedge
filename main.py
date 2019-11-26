@@ -4,6 +4,7 @@ from db.utils import create_db
 from calc.AsiaToAsiaCalculator import AsiaToAsia
 from calc.AsiaToEuCalculator import AsiaToEu
 from calc.OnBetCalculator import OnBetCalculator
+from calc.WYHedgeCalculator import WYHedge
 
 
 def init_database():
@@ -49,6 +50,9 @@ def main():
     print('完成！')
     print('开始亚对欧计算...')
     AsiaToEu.save_data_to_database()
+    print('完成！')
+    print('开始wy_hedge计算...')
+    WYHedge.save_data_to_database()
     print('完成！')
 
 
