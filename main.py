@@ -18,6 +18,8 @@ def init_database():
     DB_CURSOR.execute("delete from `on_bet`;")
     # 清空jc_to_asia表
     DB_CURSOR.execute("delete from `jc_to_asia`;")
+    # 清空wy_hedge
+    DB_CURSOR.execute("delete from `wy_hedge`;")
     DB_CONNECTOR.commit()
 
 

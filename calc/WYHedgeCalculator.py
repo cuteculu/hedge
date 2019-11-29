@@ -22,7 +22,8 @@ class WYHedge:
             except KeyError:
                 continue
             if gain > 0:
-                hedge['gain'] = gain
+                hedge['id'] = 0
+                hedge['gain'] = int(gain)
                 save_to_database_list.append(tuple(hedge.values()))
 
         return save_to_database_list
