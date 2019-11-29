@@ -1,6 +1,7 @@
 from api.JCApi import JC, JCConvert
 from api.AsiaApi import Asia
-from db.utils import create_db
+from db.utils import DB_CURSOR
+from db.utils import DB_CONNECTOR
 from calc.AsiaToAsiaCalculator import AsiaToAsia
 from calc.AsiaToEuCalculator import AsiaToEu
 from calc.OnBetCalculator import OnBetCalculator
@@ -9,18 +10,15 @@ from calc.WYHedgeCalculator import WYHedge
 
 def init_database():
     """进行数据库的初始化"""
-    db = create_db()
-    cursor = db.cursor()
-
     # 清空hedgelist表
-    cursor.execute("delete from `hedge`;")
+    DB_CURSOR.execute("delete from `hedge`;")
     # 清空odds表
-    cursor.execute("delete from `odds`;")
+    DB_CURSOR.execute("delete from `odds`;")
     # 清空onbet表
-    cursor.execute("delete from `on_bet`;")
+    DB_CURSOR.execute("delete from `on_bet`;")
     # 清空jc_to_asia表
-    cursor.execute("delete from `jc_to_asia`;")
-    db.commit()
+    DB_CURSOR.execute("delete from `jc_to_asia`;")
+    DB_CONNECTOR.commit()
 
 
 def main():
@@ -54,6 +52,8 @@ def main():
     print('开始wy_hedge计算...')
     WYHedge.save_data_to_database()
     print('完成！')
+    DB_CURSOR.close()
+    DB_CONNECTOR.close()
 
 
 if __name__ == '__main__':
