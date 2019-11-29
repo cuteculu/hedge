@@ -31,20 +31,35 @@ CREATE TABLE `dealer_rate`  (
 -- ----------------------------
 -- Records of dealer_rate
 -- ----------------------------
-INSERT INTO `dealer_rate` VALUES (1, '竞彩', 0.00);
-INSERT INTO `dealer_rate` VALUES (2, 'ＳＢ/皇冠', 0.00);
-INSERT INTO `dealer_rate` VALUES (3, 'Bet365', 0.00);
-INSERT INTO `dealer_rate` VALUES (4, '易胜博', 0.00);
-INSERT INTO `dealer_rate` VALUES (5, '韦德', 0.00);
-INSERT INTO `dealer_rate` VALUES (6, '明陞', 0.00);
-INSERT INTO `dealer_rate` VALUES (7, '10BET', 0.00);
-INSERT INTO `dealer_rate` VALUES (8, '金宝博', 0.00);
-INSERT INTO `dealer_rate` VALUES (9, '12bet/沙巴', 0.00);
-INSERT INTO `dealer_rate` VALUES (10, '利记', 0.00);
-INSERT INTO `dealer_rate` VALUES (11, '盈禾', 0.00);
-INSERT INTO `dealer_rate` VALUES (12, '18bet', 0.00);
-INSERT INTO `dealer_rate` VALUES (13, '平博', 0.00);
-INSERT INTO `dealer_rate` VALUES (14, '澳门', 0.00);
-INSERT INTO `dealer_rate` VALUES (15, '香港马会', 0.00);
+INSERT INTO `dealer_rate`
+VALUES (1, '竞彩', 1.00);
+INSERT INTO `dealer_rate`
+VALUES (2, 'ＳＢ/皇冠', 0.98);
+INSERT INTO `dealer_rate`
+VALUES (3, 'Bet365', 0.87);
+INSERT INTO `dealer_rate`
+VALUES (4, '易胜博', 0.9);
+INSERT INTO `dealer_rate`
+VALUES (5, '韦德', 0.78);
+INSERT INTO `dealer_rate`
+VALUES (6, '明陞', 0.84);
+INSERT INTO `dealer_rate`
+VALUES (7, '10BET', 0.67);
+INSERT INTO `dealer_rate`
+VALUES (8, '金宝博', 0.54);
+INSERT INTO `dealer_rate`
+VALUES (9, '12bet/沙巴', 0.77);
+INSERT INTO `dealer_rate`
+VALUES (10, '利记', 0.93);
+INSERT INTO `dealer_rate`
+VALUES (11, '盈禾', 0.91);
+INSERT INTO `dealer_rate`
+VALUES (12, '18bet', 0.49);
+INSERT INTO `dealer_rate`
+VALUES (13, '平博', 0.59);
+INSERT INTO `dealer_rate`
+VALUES (14, '澳门', 0.58);
+INSERT INTO `dealer_rate`
+VALUES (15, '香港马会', 0.74);
 
 SET FOREIGN_KEY_CHECKS = 1;
