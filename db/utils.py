@@ -72,10 +72,18 @@ class DatabaseForAsiaToAsia:
 class DatabaseForAsiaToEu:
     """为亚to欧计算提供数据库支持"""
     @classmethod
-    def distinct_id(cls):
+    def distinct_id_all(cls):
         """去重并返回odds表中的所有event_id"""
+        # 由于亚to欧逻辑原因，暂时废弃
         DB_CURSOR.execute(
-            "SELECT DISTINCT `event_id` FROM `odds` where `status`=0;")
+            "SELECT DISTINCT `event_id` FROM `odds`;")
+        id_tuple = DB_CURSOR.fetchall()
+        return [i['event_id'] for i in id_tuple]
+
+    @classmethod
+    def distinct_id_eu(cls):
+        DB_CURSOR.execute("SELECT DISTINCT `event_id` FROM `odds` where"
+                          " `odds`.odds.odd_draw!=888;")
         id_tuple = DB_CURSOR.fetchall()
         return [i['event_id'] for i in id_tuple]
 
