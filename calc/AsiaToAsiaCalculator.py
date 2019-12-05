@@ -38,12 +38,12 @@ class AsiaToAsia:
                 for odds_2 in asia_odds_dict[event_id]:
                     if odds_1 != odds_2 and odds_1['handicap'] == odds_2['handicap']:
                         pending_a = 10000
-                        pending_b = pending_a * odds_1['odd_1'] / odds_2['odd_2']
+                        pending_b = pending_a * (odds_1['odd_1'] + 1) / (odds_2['odd_2'] + 1)
                         s = pending_a + pending_b
-                        gain = (pending_a * (odds_1['odd_1']) + pending_b * (odds_2['odd_2'])) / 2 - s
+                        gain = (pending_a * (odds_1['odd_1'] + 1) + pending_b * (odds_2['odd_2'] + 1)) / 2 - s
                         if gain > -3000 and (odds_1['dealer'] != odds_2['dealer']):
                             save_to_database_list.append((
-                                odds_1['sports'], odds_1['league'], odds_1['event'], odds_2['event_en'],
+                                0, odds_1['sports'], odds_1['league'], odds_1['event'], odds_2['event_en'],
                                 odds_1['event_en'], odds_1['start_time'], odds_1['dealer'], odds_2['dealer'],
                                 odds_1['dealer'], odds_1['handicap'], odds_2['handicap'], odds_1['handicap'],
                                 odds_1['odd_1'], odds_2['odd_2'], odds_1['odd_draw'],

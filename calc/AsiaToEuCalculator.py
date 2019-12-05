@@ -74,14 +74,14 @@ class AsiaToEu:
             for odds_1 in odds_dict[event_id]:
                 for odds_2 in odds_dict[event_id]:
                     if odds_1 != odds_2:
-                        odd_1 = odds_1['odd_1']  # 非平竞彩赔率
-                        odd_draw = odds_1['odd_draw']  # 平竞彩赔率
+                        odd_1 = odds_1['odd_1'] + 1  # 非平竞彩赔率
+                        odd_draw = odds_1['odd_draw'] + 1  # 平竞彩赔率
                         # 矩阵计算模块必须保证欧赔在前
                         # 否则亚盘的odd_draw=888会参与计算，影响结果
                         if odd_draw == 888:
                             continue
                         handicap = odds_2['handicap']  # 盘口数值
-                        odd_2 = odds_2['odd_2']  # 亚盘对应盘口赔率
+                        odd_2 = odds_2['odd_2'] + 1  # 亚盘对应盘口赔率
                         result = cls.__matrix_calculate(odd_1, odd_draw, handicap, odd_2, pending_all)
                         gain = cls.__gain_calculate(result, odd_1, odd_draw, odd_2)
                         if gain > -3000 and (
