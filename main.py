@@ -1,5 +1,5 @@
-from api.JCApi import JC, JCConvert
-from api.AsiaApi import Asia
+from api.JCApiXML import JC, JCConvert
+from api.AsiaApiXML import Asia
 from db.utils import DB_CURSOR
 from db.utils import DB_CONNECTOR
 from calc.AsiaToAsiaCalculator import AsiaToAsia

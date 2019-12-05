@@ -1,34 +1,19 @@
-import json
+import xmltodict
+import requests
 from datetime import datetime
-from setting.settings import BASE_DIR
 from db.utils import save_data_for_odds, DatabaseForJCConvert, save_data_for_jc_to_asia, EVENT_DICT
 from setting import settings
 
 
 class JC:
     @staticmethod
-    def __read_odds_id_from_local():
+    def __read_odds_id_from_xml():
         """
-        读取本地保存的数据json文件，从中提取id所对应的比赛matchId。
-        竞彩的json中id是字符类型，通过这个字符id匹配到通用matchId。
-        以字符id为键，matchId为值构造字典并返回。
+        获取并解析xml文件
         """
-        char_id_to_match_id = dict()
-        with open(BASE_DIR + "竞彩名称.json", encoding="utf8") as m:
-            char_id_list = json.loads(m.read(), encoding="utf8")
-            for char_id in char_id_list['list'][0]['jczq']:
-                char_id_to_match_id[char_id['id']] = char_id['matchId']
-        return char_id_to_match_id
-
-    @staticmethod
-    def __read_odds_rate_from_local():
-        """
-        读取本地保存的数据json文件，从中提取id所对应的比赛赔率，
-        返回列表，列表中对象为字典。
-        """
-        with open(BASE_DIR + "竞彩赔率.json", encoding="utf8") as p:
-            char_id_list = json.loads(p.read(), encoding="utf8")['list']
-        return char_id_list
+        response = requests.get('http://interface.win007.com/zq/JcZqOdds.aspx').content.decode('utf8')
+        tree = xmltodict.parse(response)['list']['match']
+        return tree
 
     @classmethod
     def __extract_data(cls):
@@ -39,37 +24,29 @@ class JC:
         # 待存入数据库的元组临时存储列表
         save_to_database_list = []
 
-        # char_id_list为比赛的所有赔率列表
-        char_id_list = cls.__read_odds_rate_from_local()
-
-        # char_id_to_match_id为字符id所对应的matchId字典
-        char_id_to_match_id = cls.__read_odds_id_from_local()
+        char_id_list = cls.__read_odds_id_from_xml()
 
         for char_id in char_id_list:
             # 飞鲸数据中竞彩的赔率0盘和其他盘在同一条json字典中，需要两次提取。
-            # 有些数据的字符id不在字典中，不是所需要的数据，跳过处理。
-            # 此处如果不在字典中，说明不是欧赔，跳过.
             try:
-                char_id_to_match_id[char_id['id']]
-            except KeyError:
-                continue
-            try:
-                event = EVENT_DICT[char_id['home']] + ' vs ' + EVENT_DICT[char_id['away']]
+                event = EVENT_DICT[char_id['Home']] + ' vs ' + EVENT_DICT[char_id['Away']]
             except KeyError:
                 continue
             if event not in settings.EVENT_ID_DICT:
                 settings.EVENT_ID_DICT[event] = settings.EVENT_ID
                 settings.EVENT_ID += 1
             match_id = settings.EVENT_ID_DICT[event]
-            save_to_database_list.append((0, event, ' ',
-                                          match_id, '竞彩', char_id['rqspf']['rq3'], char_id['rqspf']['rq0'],
-                                          char_id['rqspf']['rq1'], 0,
-                                          char_id['matchTime'], datetime.now(),
-                                          char_id['rqspf']['goal'], "足球", char_id['league']))
-            save_to_database_list.append((0, event, ' ',
-                                          match_id, '竞彩', char_id['spf']['spf3'], char_id['spf']['spf0'],
-                                          char_id['spf']['spf1'], 0,
-                                          char_id['matchTime'], datetime.now(), 0, "足球", char_id['league']))
+            if char_id['rq']['stop'] == 'False':
+                save_to_database_list.append((0, event, ' ',
+                                              match_id, '竞彩', char_id['rq']['rq3'], char_id['rq']['rq0'],
+                                              char_id['rq']['rq1'], 0,
+                                              char_id['MatchTime'], datetime.now(),
+                                              char_id['rq']['goal'], "足球", char_id['league']))
+            if char_id['sf']['stop'] == 'False':
+                save_to_database_list.append((0, event, ' ',
+                                              match_id, '竞彩', char_id['sf']['sf3'], char_id['sf']['sf0'],
+                                              char_id['sf']['sf1'], 0,
+                                              char_id['MatchTime'], datetime.now(), 0, "足球", char_id['league']))
         return save_to_database_list
 
     @classmethod
@@ -458,3 +435,8 @@ class JCConvert:
     def save_data_to_database(cls):
         save_to_database_list = cls.__jc_convert()
         save_data_for_jc_to_asia(save_to_database_list)
+
+
+if __name__ == '__main__':
+    JC.save_data_to_database()
+    JCConvert.save_data_to_database()

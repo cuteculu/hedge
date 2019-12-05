@@ -7,6 +7,24 @@ DB_CONNECTOR = pymysql.connect(host=DATABASE['HOST'], user=DATABASE['USER'], pas
 DB_CURSOR = DB_CONNECTOR.cursor()
 
 
+def search_event_dict_from_db():
+    """
+    从数据库中提取event的组合映射表
+    key为各大网站的球队名称，value为不同名称对应的统一后的名称
+    :return: dict
+    """
+    DB_CURSOR.execute("select * from `odds`.team;")
+    results = DB_CURSOR.fetchall()
+    event_dict = dict()
+    for r in results:
+        event_dict[r['key']] = r['name']
+    return event_dict
+
+
+# 统一构造event字典供外部使用
+EVENT_DICT = search_event_dict_from_db()
+
+
 def save_data_for_odds(save_to_database_list):
     """保存数据到odds表"""
     insert_many_sql = "insert into `odds` values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"

@@ -12,3 +12,6 @@ DATABASE = {
     'HOST': 'localhost',
     'PORT': 3306,
 }
+# 自定义的event和event_id匹配
+EVENT_ID = 1
+EVENT_ID_DICT = dict()
