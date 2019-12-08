@@ -28,16 +28,19 @@ class AsiaToEu:
         result = {
             'pending_a': pending_a,
             'pending_b': pending_b,
-            'pending_c': pending_c}
+            'pending_c': pending_c,
+            'fix_no': fix_no}
         return result
 
     @staticmethod
-    def __gain_calculate(result, odd_1, odd_draw, odd_2):
+    def __gain_calculate(result, odd_1, odd_draw, odd_2, pending_all):
         """最后的gain值计算"""
-        s = result['pending_a'] + result['pending_b'] + result['pending_c']
-        gain = ((result['pending_a'] * odd_1 + result['pending_b'] *
-                 odd_draw + result['pending_c'] * odd_2) / 3) - s
-        return gain
+        gain_1 = odd_1 * result['pending_a'] - pending_all
+        gain_2 = odd_2 * result['pending_b'] - pending_all
+        gain_draw = odd_draw * result['pending_c'] + result['pending_a'] * result['fix_no'] - pending_all
+        if int(gain_1) == int(gain_2) == int(gain_draw):
+            return int(gain_1)
+        return None
 
     @staticmethod
     def __check_data():
@@ -73,7 +76,7 @@ class AsiaToEu:
         for event_id in odds_dict.keys():
             for odds_1 in odds_dict[event_id]:
                 for odds_2 in odds_dict[event_id]:
-                    if odds_1 != odds_2:
+                    if odds_1['dealer'] != odds_2['dealer']:
                         odd_1 = odds_1['odd_1'] + 1  # 非平竞彩赔率
                         odd_draw = odds_1['odd_draw'] + 1  # 平竞彩赔率
                         # 矩阵计算模块必须保证欧赔在前
@@ -83,7 +86,9 @@ class AsiaToEu:
                         handicap = odds_2['handicap']  # 盘口数值
                         odd_2 = odds_2['odd_2'] + 1  # 亚盘对应盘口赔率
                         result = cls.__matrix_calculate(odd_1, odd_draw, handicap, odd_2, pending_all)
-                        gain = cls.__gain_calculate(result, odd_1, odd_draw, odd_2)
+                        gain = cls.__gain_calculate(result, odd_1, odd_draw, odd_2, pending_all)
+                        if gain is None:
+                            continue
                         if gain > -3000 and (
                                 result['pending_a'] > 0 and result['pending_b'] > 0 and result['pending_c'] > 0):
                             save_to_database_list.append((
