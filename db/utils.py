@@ -201,7 +201,7 @@ class DatabaseForEuToEu:
     @classmethod
     def search_eu_from_odds(cls):
         """odds表中handicap不等于888的为欧赔"""
-        DB_CURSOR.execute("select * from `odds` where `handicap`!=888;")
+        DB_CURSOR.execute("select * from `odds` where `odds`.odds.odd_draw!=888;")
         results = DB_CURSOR.fetchall()
         return results
 
