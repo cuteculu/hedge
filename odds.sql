@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS `hedge`;
 CREATE TABLE `hedge`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `sport` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `league` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `league` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_1` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_2` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_3` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE `jc_to_asia`  (
   `update_time` datetime(6) NOT NULL,
   `handicap` float(4, 2) NOT NULL,
   `sports` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `league` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `league` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
@@ -115,7 +115,7 @@ CREATE TABLE `odds`  (
   `update_time` datetime(6) NOT NULL,
   `handicap` float(4, 2) NOT NULL,
   `sports` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `league` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `league` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
@@ -126,7 +126,7 @@ DROP TABLE IF EXISTS `on_bet`;
 CREATE TABLE `on_bet`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `sport` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `league` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `league` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_1` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_2` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_3` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -6836,7 +6836,7 @@ DROP TABLE IF EXISTS `wy_hedge`;
 CREATE TABLE `wy_hedge`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `sport` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `league` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `league` char(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_1` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_2` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `event_3` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,

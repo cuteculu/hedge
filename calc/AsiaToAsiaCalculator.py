@@ -3,6 +3,7 @@ from db.utils import save_data_for_hedge
 
 
 class AsiaToAsia:
+    """亚to亚计算程序"""
     @staticmethod
     def __check_data_():
         """

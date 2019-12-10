@@ -65,6 +65,7 @@ def save_data_for_wy_hedge(save_to_database_list):
 
 class DatabaseForAsiaToAsia:
     """为亚to亚提供数据库服务支持"""
+
     @classmethod
     def distinct_id(cls):
         """
@@ -89,6 +90,7 @@ class DatabaseForAsiaToAsia:
 
 class DatabaseForAsiaToEu:
     """为亚to欧计算提供数据库支持"""
+
     @classmethod
     def distinct_id_all(cls):
         """去重并返回odds表中的所有event_id"""
@@ -125,6 +127,7 @@ class DatabaseForAsiaToEu:
 
 class DatabaseForJCConvert:
     """竞彩转亚数据库支持"""
+
     @classmethod
     def distinct_id(cls):
         """提供去重后的event_id"""
@@ -143,6 +146,7 @@ class DatabaseForJCConvert:
 
 class DatabaseForOnBet:
     """on_bet计算支持"""
+
     @classmethod
     def distinct_id(cls):
         """竞彩转亚后的表中的event_id去重返回"""
@@ -170,6 +174,7 @@ class DatabaseForOnBet:
 
 class DatabaseForWYHedge:
     """王阳hedge表数据库支持"""
+
     @classmethod
     def search_data_from_hedge(cls):
         """提取hedge表所有数据"""
@@ -190,6 +195,16 @@ class DatabaseForWYHedge:
         return {r['dealer']: r['rate'] for r in results}
 
 
+class DatabaseForEuToEu:
+    """欧to欧计算数据库支持"""
+
+    @classmethod
+    def search_eu_from_odds(cls):
+        """odds表中handicap不等于888的为欧赔"""
+        DB_CURSOR.execute("select * from `odds` where `handicap`!=888;")
+        results = DB_CURSOR.fetchall()
+        return results
+
+
 if __name__ == '__main__':
-    # print(DatabaseForWYHedge.search_data_from_rate())
-    pass
+    print(EVENT_DICT)

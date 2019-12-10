@@ -3,6 +3,7 @@ from db.utils import DatabaseForAsiaToEu, save_data_for_hedge
 
 
 class AsiaToEu:
+    """亚to欧计算程序"""
     @staticmethod
     def __matrix_calculate(odd_1, odd_draw, handicap, odd_2, pending_all):
         """矩阵计算，原理不懂(o_O)"""

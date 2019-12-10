@@ -1,11 +1,13 @@
 from api.JCApiXML import JC, JCConvert
 from api.AsiaApiXML import Asia
+from api.EuApi import EuApi
 from db.utils import DB_CURSOR
 from db.utils import DB_CONNECTOR
 from calc.AsiaToAsiaCalculator import AsiaToAsia
 from calc.AsiaToEuCalculator import AsiaToEu
 from calc.OnBetCalculator import OnBetCalculator
 from calc.WYHedgeCalculator import WYHedge
+from calc.EuToEuCalculator import EuToEu
 
 
 def init_database():
@@ -40,6 +42,9 @@ def main():
     print('提取亚盘数据并存储...')
     Asia.save_data_to_database()
     print('完成亚盘提取！')
+    print('开始提取欧盘数据...')
+    EuApi.save_data_to_database()
+    print('完成欧盘提取!')
 
     # 进行数据计算
     print('开始on_bet计算...')
@@ -50,6 +55,9 @@ def main():
     print('完成！')
     print('开始亚对欧计算...')
     AsiaToEu.save_data_to_database()
+    print('完成！')
+    print('开始欧对欧计算...')
+    EuToEu.save_data_to_database()
     print('完成！')
     print('开始wy_hedge计算...')
     WYHedge.save_data_to_database()
