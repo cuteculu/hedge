@@ -1,3 +1,4 @@
+import collections
 import xmltodict
 import requests
 from datetime import datetime
@@ -13,6 +14,11 @@ class JC:
         """
         response = requests.get('http://interface.win007.com/zq/JcZqOdds.aspx').content.decode('utf8')
         tree = xmltodict.parse(response)['list']['match']
+        # with open(BASE_DIR + 'JcZqOdds_aspx.xml', 'r', encoding='utf8') as f:
+        #     tree = xmltodict.parse(f.read())['list']['match']
+        # 如果tree只有一条数据，类型就不是list，会导致后面遍历出错
+        if isinstance(tree, collections.OrderedDict):
+            tree = [tree]
         return tree
 
     @classmethod
