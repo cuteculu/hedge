@@ -8,6 +8,7 @@ from calc.AsiaToEuCalculator import AsiaToEu
 from calc.OnBetCalculator import OnBetCalculator
 from calc.WYHedgeCalculator import WYHedge
 from calc.EuToEuCalculator import EuToEu
+import pymysql
 
 
 def init_database():
@@ -34,7 +35,10 @@ def main():
 
     # 数据提取与存储
     print('提取竞彩数据并存储...')
-    JC.save_data_to_database()
+    try:
+        JC.save_data_to_database()
+    except pymysql.err.IntegrityError:
+        pass
     print('完成竞彩提取！')
     print('开始竞彩转亚...')
     JCConvert.save_data_to_database()
